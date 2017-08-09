@@ -42,7 +42,6 @@ exports.addFactura = function(req, res, next) {
 
     factura.save(function(err, factura) {
         if(err) return res.status(500).send( err.message);
-        res.redirect('/');
         res.status(200).jsonp(factura);
     });
 };
