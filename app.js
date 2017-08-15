@@ -1,10 +1,11 @@
 var express = require("express"),  
     app = express(),
     bodyParser  = require("body-parser"),
-    methodOverride = require("method-override");
-    http = require("http");
-    server = http.createServer(app);
-    mongoose = require('mongoose');
+    methodOverride = require("method-override"),
+    http = require("http"),
+    server = http.createServer(app),
+    mongoose = require('mongoose'),
+    favicon = require('serve-favicon'),
     path = require('path');
 
 app.use(bodyParser.urlencoded({ extended: false }));  
@@ -29,25 +30,8 @@ router.get('/', function(req, res) {
 var facturas = express.Router();
 
 var recibos = express.Router();
-/*
-facturas.get('/',(req,res) => {
-  res.sendFile(__dirname + '/index.html')
-  
-});*/
-//facturas.route('/')  
-/*
-facturas.get('/', (req,res) => {
-    res.sendFile(__dirname+'/index.html')
-  });
 
-facturas.route('/agregar')
-  .get( (req,res) => {
-    res.sendFile(__dirname + '/agregar.html') 
-  });
-*/
-
-
-
+// view engine setup
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine', 'jade');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -57,32 +41,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //Routes Facturas
-
 facturas.get('/',FacturaCtrl.findAllFacturas);
 
 facturas.get('/nueva-factura', FacturaCtrl.create);
 
+facturas.post('/facturas',FacturaCtrl.addFactura);
+
 facturas.get('/edit-factura/:id',FacturaCtrl.showEditFactura);
 
-facturas.route('/')  
-  .get(FacturaCtrl.findAllFacturas);
+facturas.post('/edit-factura/:id/edit',FacturaCtrl.updateFactura);
 
+facturas.post('/facturas/:id',FacturaCtrl.deleteFactura);
+
+
+// No utilizadas
 facturas.route('/factura/:id')  
   .get(FacturaCtrl.findAllFacturas)
   .post(FacturaCtrl.updateFactura);
 
-facturas.route('/facturas')  
-  .get(FacturaCtrl.findAllFacturas)
-  .post(FacturaCtrl.addFactura);
 
-facturas.route('/facturas/:id')  
-  .get(FacturaCtrl.findById)
-  .put(FacturaCtrl.updateFactura)
-  .delete(FacturaCtrl.deleteFactura);
-
+// Ruta General
 app.use('/api', facturas);
-
-
 app.use(facturas);
 
 
@@ -90,10 +69,7 @@ mongoose.connect('mongodb://localhost/facturas', function(error, respuesta) {
 	if (error) {
 		console.log('ERROR: connecting to Database ' +  error);
 	}
-  /*
-	app.listen(8080, function() {
-		console.log("Node server running on http://localhost:5602");
-	});*/
+  
 });
 
 app.listen(8080, function() {  

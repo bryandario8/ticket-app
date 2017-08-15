@@ -1,13 +1,12 @@
 h2 #{title}
 form(method='post',action=act)
-
   p
     label(for="num") Número:
       input(type='text', name='num', value=factura.num)
 
   p
     label(for="date") Fecha:
-      input(type='date', name='date', size=100, value=factura.date)
+      input(type='date', name='date', value=factura.date)
 
   p
     label(for="origen") Origen:
@@ -15,11 +14,11 @@ form(method='post',action=act)
 
   p
     label(for="destino") Destino:
-      input(type='text', name='destino', size=100, value=factura.destino)
+      input(type='text', name='destino',value=factura.destino)
 
   p
     label(for="debt") Deuda:
-      input(type='text', name='debt', size=100, value=factura.debt)
+      input(type='text', name='debt', value=factura.debt)
 
   p
     label(for="adq") Adquiriente:
@@ -27,7 +26,13 @@ form(method='post',action=act)
   p
     label(for="puesto") Puesto:
       input(type='text', name='puesto', value=factura.puesto)
+  p
+    -if(put)
+      input(type="hidden", name="_method", value="PUT")
 
 
   p
-    input(type='submit', value='Guardar')
+    button#btnSubmit(type='submit').
+      Guardar
+
+  a(href="/") Cancelar
