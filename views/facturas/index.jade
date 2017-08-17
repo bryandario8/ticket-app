@@ -24,14 +24,16 @@ block content
             td #{item.debt}
             td #{item.adq}
             td #{item.puesto}
-            td Ver
             td 
-              a(href="/edit-factura/#{item._id}") Editar
+              form(method="get", action="/edit-factura/#{item._id}")
+                button(type='submit').
+                  Editar
             td
               form(method="post", action="/facturas/#{item._id}",enctype='application/x-www-form-urlencoded')
                 input(type="hidden", name="_method", value="DELETE") 
                 button(type='submit').
                   Eliminar
+    
     p
       a(href="/nueva-factura") Nuevo Ticket
   -else
